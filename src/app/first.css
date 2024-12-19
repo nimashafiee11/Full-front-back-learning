@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.content {
+    height: 200vh; /* Make the content tall enough to allow scrolling */
+}
+
+h1, p {
+    opacity: 0; /* Initially hide the text */
+    transform: translateY(20px); /* Start from a slightly lower position */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Animation transition */
+}
+
+/* This class will be added when the text comes into view */
+.animate {
+    opacity: 1; /* Fade in */
+    transform: translateY(0); /* Move to original position */
+}
