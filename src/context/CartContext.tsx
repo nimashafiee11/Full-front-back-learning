@@ -1,15 +1,16 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
+import {useState , useEffect} from 'react'
 
-type CartItem = {
+interface CartItem {
   id: number;
   title: string;
   price: number;
   quantity: number;
 };
 
-type CartContextType = {
+interface CartContextType  {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
@@ -19,9 +20,8 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({children,}) => {
+
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Load cart from local storage on mount
@@ -33,11 +33,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       const now = new Date().getTime();
       const savedTime = parseInt(savedTimestamp, 10);
 
-      // Check if the saved cart is within 2 hours
+      // Check if the saved cart is within 1 miniute
       if (now - savedTime <= 60 * 1000) {
         setCart(JSON.parse(savedCart));
       } else {
-        // If more than 2 hours, clear the saved cart
+        // If more than 1 miniute , clear the saved cart
         localStorage.removeItem("cart");
         localStorage.removeItem("cartTimestamp");
       }
@@ -48,7 +48,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem("cart", JSON.stringify(cart));
-      localStorage.setItem("cartTimestamp", new Date().getTime().toString());
+      localStorage.setItem("cartTimestamp", new Date().getTime().toString());      
     }
   }, [cart]);
 
@@ -77,7 +77,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateQuantity = (id: number, quantity: number) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+        item.id === id ? { ...item, quantity: Math.max( 1 , quantity) } : item
       )
     );
   };
@@ -89,9 +89,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}
-    >
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}  >
       {children}
     </CartContext.Provider>
   );

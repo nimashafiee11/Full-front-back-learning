@@ -1,11 +1,21 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from '@/components/header';
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+}
+
 
 export default function AdminDashboard() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [newProduct, setNewProduct] = useState({ title: '', price: '', image: '' });
   const [editingProduct, setEditingProduct] = useState(null);
 
@@ -15,14 +25,14 @@ export default function AdminDashboard() {
       try {
         const response = await axios.get('https://fakestoreapi.com/products');
         setProducts(response.data);
-        setFilteredProducts(response.data);
+        setFilteredProducts(products);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-
     fetchProducts();
   }, []);
+
 
   // Handle search query
   useEffect(() => {
@@ -31,16 +41,19 @@ export default function AdminDashboard() {
     );
     setFilteredProducts(results);
   }, [searchQuery, products]);
+  
+
+    
 
   // Add a new product
   const handleAddProduct = async () => {
     try {
-      const response = await axios.post('https://fakestoreapi.com/products', {
+      const newResponse = await axios.post('https://fakestoreapi.com/products', {
         title: newProduct.title,
         price: newProduct.price,
         image: newProduct.image,
       });
-      setProducts([...products, response.data]);
+      setProducts([...products, newResponse.data]);
       setNewProduct({ title: '', price: '', image: '' });
     } catch (error) {
       console.error('Error adding product:', error);
@@ -60,10 +73,9 @@ export default function AdminDashboard() {
   // Update a product
   const handleUpdateProduct = async () => {
     try {
-      const response = await axios.put(
-        `https://fakestoreapi.com/products/${editingProduct.id}`,
+      const response = await axios.put(`https://fakestoreapi.com/products/${editingProduct.id}`,
         editingProduct
-      );
+      )
       setProducts(
         products.map((product) =>
           product.id === editingProduct.id ? response.data : product
@@ -77,14 +89,14 @@ export default function AdminDashboard() {
 
   return (
     <React.Fragment>
-      
+      <Header/>  
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
 
       {/* Search Section */}
       <div className="mb-8">
         <input
-          type="text"
+          type="search"
           placeholder="Search for a product..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -131,7 +143,7 @@ export default function AdminDashboard() {
             <img
               src={product.image}
               alt={product.title}
-              className="h-40 w-full object-cover mb-4"
+              className="h-40 w-full mix-blend-darken object-cover mb-4"
             />
             <h2 className="font-bold text-lg">{product.title}</h2>
             <p className="text-gray-700">${product.price}</p>
@@ -178,7 +190,7 @@ export default function AdminDashboard() {
             placeholder="Product Image URL"
             value={editingProduct.image}
             onChange={(e) =>
-              setEditingProduct({ ...editingProduct, image: e.target.value })
+              setEditingProduct({ ...editingProduct, images: e.target.value })
             }
             className="border px-4 py-2 mb-4 w-full"
           />
