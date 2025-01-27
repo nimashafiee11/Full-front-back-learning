@@ -7,9 +7,9 @@ const Header: React.FC = () => {
   const { cart } = useCart();
 
   return (
-    <header className="flex items-center justify-between p-4 fixed z-20 w-screen  bg-blue-500 text-white">
+    <header className="flex items-center justify-between p-4 fixed z-20 w-screen  bg-blue-900 text-white">
       <h1 className="text-xl font-bold">
-        <Link href="/">My Shop</Link>
+        <Link href="/">AI online Shop</Link>
       </h1>
      <div className="absolute end-0 mr-20" >
      <Link
@@ -40,7 +40,7 @@ const Header: React.FC = () => {
         </svg>
         
         {cart.length > 0 && (
-          <span className="absolute -top-0 -right-0  bg-red-500 mr-6 mt-1  text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+          <span className="absolute top-1 right-0  bg-red-500 mr-6 mt-1  text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
             {cart.reduce((total , item) => total + item.quantity , 0)}
           </span>
         )}

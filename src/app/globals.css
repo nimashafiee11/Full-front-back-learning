@@ -19,3 +19,14 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+ #background{
+     background-image: url('/photo4.jpg') ;
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     mix-blend-mode: darken;
+     width: 100%;
+    background-size: cover;
+ }
+ .photo{
+  height: 50rem;
+ }

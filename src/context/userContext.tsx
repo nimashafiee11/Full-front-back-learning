@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // تعریف تایپ‌ها برای کاربر و کانتکست
 interface User {
@@ -28,6 +29,7 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const Routing = useRouter()
 
   // متد ثبت‌نام
   const signUp = async (username: string, password: string) => {
@@ -35,8 +37,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const response = await axios.post("http://localhost:5000/signup", {
         username,
         password,
+      },{headers:{
+        'Content-Type' : 'application/json'
+      }}).then((res)=>{
+        if(res.data.status === 200){
+          Routing.push('/profile')
+          setCurrentUser(res.data)
+        }
+        console.log(response);
+        
       })
-      setCurrentUser(response.data);
+      // setCurrentUser(response.data);
     } catch (error) {
       console.error("SignUp Error:", error);
     }
@@ -45,11 +56,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   // متد ورود
   const signIn = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:5000/signin", {
+      const respponse = await axios.post("http://localhost:5000/signin", {
         username,
         password,
-      });
-      setCurrentUser(response.data);
+      }).then((res)=>{
+        if(res.data.status === 200){
+          Routing.push('/profile')
+          setCurrentUser(res.data)
+        }
+      })
+      console.log(respponse);
+      
+      // setCurrentUser(response.data);
     } catch (error) {
       console.error("SignIn Error:", error);
     }
@@ -64,8 +82,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const fetchProfile = async () => {
     if (!currentUser) return;
     try {
-      const response = await axios.get("http://localhost:5000/user/profile", {
-        headers: { Authorization: `Bearer ${currentUser.token}` },
+      const response = await axios.get("http://localhost:5000/user/profile", 
+        {headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       setCurrentUser({ ...currentUser, profile: response.data });
     } catch (error) {

@@ -2,11 +2,13 @@
 
 import React, { useEffect } from "react";
 import { useUserContext } from "@/context/userContext";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // تعریف تایپ برای هر آیتم در cart
 interface CartItem {
   title: string;
+  price : number
   quantity: number;
 }
 
@@ -19,15 +21,17 @@ interface Request {
 // کامپوننت پروفایل
 const Profile: React.FC = () => {
   const { currentUser, fetchProfile } = useUserContext();
-
+   const Routing = useRouter();
   // گرفتن اطلاعات پروفایل وقتی کامپوننت لود می‌شود
   useEffect(() => {
     fetchProfile();
   }, []);
 
-  if (!currentUser) {
-    return <p className="mt-24 text-center animate-pulse text-lg text-gray-600">Please <Link href='./auth' >log in</Link> to view your profile.</p>;
-  }
+  if (!currentUser || !currentUser.token ) {
+    alert('please login first')
+    Routing.push('/auth' )
+    return;
+  } 
 
   return (
     <div className="max-w-4xl mx-auto mt-12 p-6 bg-white shadow-md rounded-lg">
@@ -54,7 +58,7 @@ const Profile: React.FC = () => {
                   key={idx}
                   className="text-gray-700 text-sm flex justify-between"
                 >
-                  <span>{item.title}</span>
+                  <span>{item.title}  ${item.price} </span>
                   <span className="text-gray-500">Quantity: {item.quantity}</span>
                 </li>
               ))}

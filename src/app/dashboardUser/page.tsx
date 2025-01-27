@@ -11,7 +11,7 @@ interface User {
 
 interface Request {
   date: string;
-  cart: { title: string; quantity: number }[];
+  cart: { title: string;  quantity: number }[];
 }
 
 const AdminDashboard: React.FC = () => {
@@ -33,7 +33,7 @@ const AdminDashboard: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const deleteUser = async (username: string) => {
+  const deleteUser = async (username: string ) => {
     if (window.confirm(`Are you sure you want to delete ${username}?`)) {
       try {
         await axios.delete(`https://fakestoreapi.com/users/${username}`);
@@ -79,11 +79,12 @@ const AdminDashboard: React.FC = () => {
     }
 
     try {
-      const newUser: User = { username: newUsername, password: newPassword , requests: [] };
-      await axios.post("/api/users", newUser);
+      const newUser: User = { username: newUsername  ,   password: newPassword , requests: [] };
+      await axios.post("https://fakestoreapi.com/users", newUser);
       setUsers((prevUsers) => [...prevUsers, newUser]);
       setNewUsername("");
       setNewPassword("");
+  
       alert("User added successfully.");
     } catch (error) {
       console.error("Error adding user:", error);
@@ -125,7 +126,7 @@ const AdminDashboard: React.FC = () => {
       {users.length === 0 ? (
         <p className="text-center text-gray-600">No users found.</p>
       ) : (
-        <table className="w-full border-collapse border border-gray-300">
+        <table className="w-full  border-collapse border border-gray-300">
           <thead>
             <tr>
               <th className="border border-gray-300 px-4 py-2">Username</th>

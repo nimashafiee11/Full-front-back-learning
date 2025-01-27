@@ -1,41 +1,51 @@
 'use client'
 import React, { useState } from 'react'
 import {   useUserContext  } from '@/context/userContext'
-    
+
 
 function page() {
 
     const {signIn ,  signUp  } = useUserContext(); 
     const [username , setUserName ] = useState('');
     const [password , setPassword] = useState('');
-       
-     const handleSignIn =(e:any)=>{
+   
+
+     const handleSignIn = async (e:any)=>{
       e.preventDefault();
-      signIn(username , password);
+      try {
+        await signIn(username , password)
+      } catch (e) {
+        console.log(e);
+      }
       console.log(handleSignIn);
       
      }
-     const handleSignUp = (e:any)=> {
+     const handleSignUp = async (e:any)=> {
       e.preventDefault();
-     signUp(username , password);
+      try {
+        await signUp(username , password);
+      } catch (e) {
+        console.log(e);
+        
+      }
      console.log(handleSignUp);
      
      }
   return (
    <React.Fragment>
    
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+    <div className="min-h-screen flex items-center justify-center bg-blue-300">
+      <div className="bg-white   p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold mb-6 text-gray-700 text-center">Welcome Back</h2>
-        <form  className="space-y-4">
+        <form  className="space-y-8 ">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Emali</label>
             <input
-              type="username"
+              type="email"
               name="username"
               value={username}
               id="email"
-              placeholder="Enter your name"
+              placeholder="Enter your email"
               onChange={(e)=>{setUserName(e.target.value)}}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
               required
@@ -54,20 +64,24 @@ function page() {
               required
             />
           </div>
+          <div className=' flex justify-center gap-5 ' >
           <button
            onClick={handleSignIn}
             type="submit"
-            className="w-full py-2 px-4 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 transition duration-300"
+            className="   w-24  py-2 px-4 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 
+            transition-all duration-500 hover:w-60 "
           >
             signIn
           </button>
           <button
            onClick={handleSignUp}
             type="submit"
-            className="w-full py-2 px-4 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 transition duration-300"
+            className=" w-24 py-2 px-4 bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 
+            transition-all duration-500 hover:w-60 "
           >
             signUp
           </button>
+          </div>
         </form>
       </div>
     </div>

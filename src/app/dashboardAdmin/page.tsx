@@ -89,6 +89,7 @@ export default function AdminDashboard() {
 
   return (
     <React.Fragment>
+      <div id='' >
       <Header/>  
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
@@ -100,7 +101,7 @@ export default function AdminDashboard() {
           placeholder="Search for a product..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border px-4 py-2 w-full"
+          className="border px-4 py-2 w-80 rounded-md "
         />
       </div>
 
@@ -208,6 +209,7 @@ export default function AdminDashboard() {
           </button>
         </div>
       )}
+    </div>
     </div>
     </React.Fragment>
   );
